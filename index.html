@@ -9,13 +9,20 @@
 </head>
 <body>
     <h1>I Exp Books❤</h1>
-    <form action="">
+    <div>
         <textarea name="" id="output" cols="30" rows="10"></textarea>
-        <input type="text">
+        <form action="" class="search-word">
+            <input type="text" id="search-input">
+            <input type="submit" value="Buscar" id="search-submit">
+        </form>
         <input type="file" name="" id="the-file">
-        <input type="text" name="" id="">
+        <form action="" class="ahundred-word">
+            <p>Las 100 Palabras más usadas</p>
+            <input type="submit" value="Muestramelas" id="ahundred-submit">
+        </form>
+    </div>
+    <p class="lista-palabras"></p>
 
-    </form>
     <script src="script.js"></script>
 </body>
 </html>
