@@ -97,15 +97,20 @@ function searchWord(e) {
 
 const repeatedHundred = (e) => {
     e.preventDefault();
-    const hundredArray = [];
+    let hundredArray = '';
     const las100 = document.querySelector('.las-100-palabras');
+    const listElem = document.createElement('li');
 
     for (let i = 0; i < 99; i++) {
-        hundredArray[i] = fullSortedWordArray[i];
-        
+        hundredArray = fullSortedWordArray[i];
+        console.log(hundredArray);
+        // las100.textContent = hundredArray;
+        listElem.innerHTML += `<li> ${hundredArray}</li>` ;
+        las100.appendChild(listElem);
     }
-    las100.textContent = hundredArray;
-    console.log({hundredArray});
+    // // 
+    // las100.textContent = hundredArray;
+    // console.log({hundredArray});
 }
 
 
