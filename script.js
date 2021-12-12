@@ -1,7 +1,8 @@
 const 
     file = document.getElementById('the-file'),
     searchWordForm = document.querySelector('.search-word'),
-    searchInput = document.getElementById('search-input');
+    searchInput = document.getElementById('search-input'),
+    ahundredForm = document.querySelector('.ahundred-word');
 
 let fileContent = '';
 let fileArray = [];
@@ -94,8 +95,23 @@ function searchWord(e) {
 }
 
 
+const repeatedHundred = (e) => {
+    e.preventDefault();
+    const hundredArray = [];
+    const las100 = document.querySelector('.las-100-palabras');
+
+    for (let i = 0; i < 99; i++) {
+        hundredArray[i] = fullSortedWordArray[i];
+        
+    }
+    las100.textContent = hundredArray;
+    console.log({hundredArray});
+}
+
+
 
 file.addEventListener('change', getFile);
 searchWordForm.addEventListener('submit', searchWord);
+ahundredForm.addEventListener('submit', repeatedHundred);
  
 
