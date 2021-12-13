@@ -10,6 +10,10 @@ let wordObj = {};
 let fullSortedWordArray = [];
 
 
+// ===== a list of stop words we don't want to include in stats
+const enArrayCommonWords = ['a', 'and', 'in', 'the', 'of', 'to'];
+// const esArrayCommonWords = ['a', 'and', 'in', 'the', 'of', 'to'];
+
 // =====  get the file and extract the text content
 const getFile = (e) => {
     var input = e.target;
@@ -49,13 +53,8 @@ const arrayCountedWords = () => {
         }    
     }
 
-    // console.log(wordObj);
-
-    // wordArr = Object.entries(wordObj);
-    // console.log(wordArr);
     upDateList(wordObj);
     sortObj(Object.entries(wordObj));
-
 }
 
 
@@ -74,11 +73,11 @@ const objToArray = wordObj => {
 }
 
 const sortObj = (wordArr) => {
-    console.log(wordArr);
+    // console.log(wordArr);
     wordArr.sort(function(a, b) {
         return b[1] - a[1];
     });
-    console.log(wordArr)
+    // console.log(wordArr)
     fullSortedWordArray = wordArr;
 }
 
@@ -103,8 +102,7 @@ const repeatedHundred = (e) => {
 
     for (let i = 0; i < 99; i++) {
         hundredArray = fullSortedWordArray[i];
-        console.log(hundredArray);
-        // las100.textContent = hundredArray;
+        // console.log(hundredArray);
         listElem.innerHTML += `<li> ${hundredArray}</li>` ;
         las100.appendChild(listElem);
     }
