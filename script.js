@@ -96,12 +96,21 @@ const sortObj = (wordArr) => {
 // AHORA QUE TENGO UN OBJETO CON TODAS LAS PALABRAS ESTO ES SUSTITUIBLE y MEJORABLE --------------------------------
 function searchWord(e) {
     e.preventDefault();
-    let str = searchInput.value;
-    let strArray =  fileArray;
-    for (let i=0; i<strArray.length; i++) {
-        if (strArray[i].match(str)) return console.log(i);
-    }
-    return -1;
+    let timesTheWord = ';'
+    timesTheWord = wordObj[searchInput.value];
+
+    const searchedWordP = document.querySelector('.searched-word-p');
+    searchedWordP.classList.add('mb-5');
+    searchedWordP.innerHTML = `Se han encontrado <strong>${timesTheWord}</strong> resultados para la palabra <i>"${searchInput.value}."</i>`;
+
+
+    // e.preventDefault();
+    // let str = searchInput.value;
+    // let strArray =  fileArray;
+    // for (let i=0; i<strArray.length; i++) {
+    //     if (strArray[i].match(str)) return console.log(i);
+    // }
+    // return -1;
 }
 
 //añadir el título del document
