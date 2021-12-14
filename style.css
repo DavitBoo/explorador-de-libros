@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
+body{
+    background-color: #ECDBB7;
+    background: -webkit-linear-gradient(to left, #065026, #4f9c70);
+    background: linear-gradient(to left, #065026, #4f9c70);
+    font-family: 'Poppins', sans-serif !important;
+}
+
+h1{
+    text-shadow: 4px 4px 5px rgb(121, 121, 121);
+}
+
+.las-100-palabras{
+    list-style: none;
+    display: grid;
+    overflow-y: scroll;
+    max-height: 250px;
+}

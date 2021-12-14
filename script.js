@@ -1,11 +1,17 @@
 const 
+    body = document.querySelector('body')
     file = document.getElementById('the-file'),
     searchWordForm = document.querySelector('.search-word'),
     searchInput = document.getElementById('search-input'),
     ahundredForm = document.querySelector('.ahundred-word');
+    textAlert = document.querySelector('.alert');
+
+const title = document.querySelector('.book-name'),
+      h1 = document.querySelector('h1');
 
 let fileContent = '';
 let fileArray = [];
+let fileTitle = "";
 let wordObj = {};
 let fullSortedWordArray = [];
 
@@ -17,6 +23,11 @@ const enArrayCommonWords = ['a', 'and', 'in', 'the', 'of', 'to'];
 // =====  get the file and extract the text content
 const getFile = (e) => {
     var input = e.target;
+    
+    fileTitle = e.target.files[0].name;
+    fileTitle = fileTitle.substr(0, fileTitle.lastIndexOf('.')) || input;
+    console.log(fileTitle);
+    showTitle(fileTitle);
 
     var reader = new FileReader();
     reader.onload = function(){
@@ -42,7 +53,7 @@ const textToString = () => {
 
 // ========= creates an object with all the word and it counts them
 const arrayCountedWords = () => {
-    const fullSortedWordArray = [];
+    // const fullSortedWordArray = [];
 
     //vamos a crerar un objeto con las palabras del texto
     for (let i = 0; i < fileArray.length; i++) {
@@ -53,7 +64,7 @@ const arrayCountedWords = () => {
         }    
     }
 
-    upDateList(wordObj);
+    // upDateList(wordObj); -----------------------------------------------------   
     sortObj(Object.entries(wordObj));
 }
 
@@ -93,9 +104,20 @@ function searchWord(e) {
     return -1;
 }
 
+//añadir el título del document
+const showTitle = () => {
+    title.textContent = fileTitle;
+}
 
+
+// imprimir la más repetidas en la lista que se activa con el submit
 const repeatedHundred = (e) => {
     e.preventDefault();
+    if(!fileContent){
+        mostrarAlerta('No has cargado ningún texto.')
+        return;
+    }
+
     let hundredArray = '';
     const las100 = document.querySelector('.las-100-palabras');
     const listElem = document.createElement('li');
@@ -103,7 +125,8 @@ const repeatedHundred = (e) => {
     for (let i = 0; i < 99; i++) {
         hundredArray = fullSortedWordArray[i];
         // console.log(hundredArray);
-        listElem.innerHTML += `<li> ${hundredArray}</li>` ;
+        listElem.innerHTML += `<li>${i+1}. ${hundredArray.join(': ')}</li>` ;
+        console.log(hundredArray);
         las100.appendChild(listElem);
     }
     // // 
@@ -112,9 +135,38 @@ const repeatedHundred = (e) => {
 }
 
 
+const mostrarAlerta = mensaje =>{
+    textAlert.textContent = mensaje;
+    textAlert.classList.remove('d-none');
+    setTimeout(() => {
+        textAlert.classList.add('d-none');
+    }, 5000);
+}
+
+
+const walk = 7;
+
+function shadow(e){
+    const {offsetWidth: width, offsetHeight: height} = body;
+    let { offsetX: x, offsetY: y} = e;
+
+    if(this !== e.target){
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+  
+   const xWalk = Math.round(x / width * walk) - (walk / 2); 
+   const yWalk = Math.round(y / height * walk) - (walk / 2); 
+
+    h1.style.textShadow = `${xWalk}px ${yWalk}px 5px rgb(121,121,121)`;
+
+  }
+
+
 
 file.addEventListener('change', getFile);
 searchWordForm.addEventListener('submit', searchWord);
 ahundredForm.addEventListener('submit', repeatedHundred);
+body.addEventListener('mousemove', shadow);
  
 
