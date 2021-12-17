@@ -1,9 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
 
 body{
     background-color: #ECDBB7;
@@ -16,9 +11,17 @@ h1{
     text-shadow: 4px 4px 5px rgb(121, 121, 121);
 }
 
+
+
 .las-100-palabras{
     list-style: none;
     display: grid;
     overflow-y: scroll;
     max-height: 250px;
+}
+
+
+footer p{
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.075);
 }

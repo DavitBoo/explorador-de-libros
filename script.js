@@ -4,7 +4,8 @@ const
     searchWordForm = document.querySelector('.search-word'),
     searchInput = document.getElementById('search-input'),
     ahundredForm = document.querySelector('.ahundred-word');
-    textAlert = document.querySelector('.alert');
+    textAlert = document.querySelector('.alert'),
+    langSelector = document.getElementById('lang-selector');
 
 const title = document.querySelector('.book-name'),
       h1 = document.querySelector('h1');
@@ -15,10 +16,15 @@ let fileTitle = "";
 let wordObj = {};
 let fullSortedWordArray = [];
 
-
 // ===== a list of stop words we don't want to include in stats
-const enArrayCommonWords = ['a', 'and', 'in', 'the', 'of', 'to'];
-// const esArrayCommonWords = ['a', 'and', 'in', 'the', 'of', 'to'];
+// sin implementar --------------------------------------------------------------------------
+const enArrayCommonWords =  ["a", "able", "about", "across", "after", "all", "almost", "also", "am", "among", "an", "and", "any", "are", "as", "at", "be", "because", "been", "but", "by", "can", "cannot", "could", "dear", "did", "do", "does", "either", "else", "ever", "every", "for", "from", "get", "got", "had", "has", "have", "he", "her", "hers", "him", "his", "how", "however", "i", "if", "in", "into", "is", "it", "its", "just", "least", "let", "like", "likely", "may", "me", "might", "most", "must", "my", "neither", "no", "nor", "not", "of", "off", "often", "on", "only", "or", "other", "our", "own", "rather", "said", "say", "says", "she", "should", "since", "so", "some", "than", "that", "the", "their", "them", "then", "there", "these", "they", "this", "tis", "to", "too", "twas", "us", "wants", "was", "we", "were", "what", "when", "where", "which", "while", "who", "whom", "why", "will", "with", "would", "yet", "you", "your", "ain't", "aren't", "can't", "could've", "couldn't", "didn't", "doesn't", "don't", "hasn't", "he'd", "he'll", "he's", "how'd", "how'll", "how's", "i'd", "i'll", "i'm", "i've", "isn't", "it's", "might've", "mightn't", "must've", "mustn't", "shan't", "she'd", "she'll", "she's", "should've", "shouldn't", "that'll", "that's", "there's", "they'd", "they'll", "they're", "they've", "wasn't", "we'd", "we'll", "we're", "weren't", "what'd", "what's", "when'd", "when'll", "when's", "where'd", "where'll", "where's", "who'd", "who'll", "who's", "why'd", "why'll", "why's", "won't", "would've", "wouldn't", "you'd", "you'll", "you're", "you've"];
+
+const esArrayCommonWords = ['', 'a', 'al', 'con', 'de', 'del', 'el', 'en', 'la', 'las', 'lo', 'los', 'me', 'mi', 'por', 'que', 'se', 'un', 'una', 'y'];
+
+const elArrayCommonWords =  ['τι', 'το', 'ο', 'η'];
+
+let arrLang = [];
 
 // =====  get the file and extract the text content
 const getFile = (e) => {
@@ -47,16 +53,15 @@ const getFile = (e) => {
 // ========= converts the text to words array
 const textToString = () => {
     fileArray = fileContent.split(/\s+/ );
-    // console.log(fileArray);
 }
 
 
 // ========= creates an object with all the word and it counts them
 const arrayCountedWords = () => {
-    // const fullSortedWordArray = [];
 
     //vamos a crerar un objeto con las palabras del texto
     for (let i = 0; i < fileArray.length; i++) {
+
         if(wordObj[fileArray[i]]){
             wordObj[fileArray[i]]++;
         }else{
@@ -64,7 +69,6 @@ const arrayCountedWords = () => {
         }    
     }
 
-    // upDateList(wordObj); -----------------------------------------------------   
     sortObj(Object.entries(wordObj));
 }
 
@@ -78,11 +82,6 @@ const upDateList = wordObj => {
 }
 
 
-// ======= Object to an array with the values ------------------------------------------------------
-const objToArray = wordObj => {
-
-}
-
 const sortObj = (wordArr) => {
     // console.log(wordArr);
     wordArr.sort(function(a, b) {
@@ -93,24 +92,34 @@ const sortObj = (wordArr) => {
 }
 
 
-// AHORA QUE TENGO UN OBJETO CON TODAS LAS PALABRAS ESTO ES SUSTITUIBLE y MEJORABLE --------------------------------
+// ===== to show the times it is a specific word in the file
 function searchWord(e) {
     e.preventDefault();
-    let timesTheWord = ';'
+
+    if(!fileContent){
+        mostrarAlerta('No has cargado ningún texto.')
+        return;
+    }
+
+    if(!searchInput.value){
+        mostrarAlerta('Te has olvidado de escribir una palabra.')
+        return;
+    }
+
+    let timesTheWord = '';
     timesTheWord = wordObj[searchInput.value];
 
     const searchedWordP = document.querySelector('.searched-word-p');
     searchedWordP.classList.add('mb-5');
+    
+    if(typeof(timesTheWord)=== 'undefined'){
+        searchedWordP.innerHTML = `No se han econtrado coincidencias para la palabra <i>"${searchInput.value}."</i>`;
+        return;
+    }
+
     searchedWordP.innerHTML = `Se han encontrado <strong>${timesTheWord}</strong> resultados para la palabra <i>"${searchInput.value}."</i>`;
+    
 
-
-    // e.preventDefault();
-    // let str = searchInput.value;
-    // let strArray =  fileArray;
-    // for (let i=0; i<strArray.length; i++) {
-    //     if (strArray[i].match(str)) return console.log(i);
-    // }
-    // return -1;
 }
 
 //añadir el título del document
@@ -131,16 +140,26 @@ const repeatedHundred = (e) => {
     const las100 = document.querySelector('.las-100-palabras');
     const listElem = document.createElement('li');
 
-    for (let i = 0; i < 99; i++) {
+    let k=0;
+    let maxWords = 99;
+    for (let i = 0; i < maxWords; i++) {
+        k++;
+        for (let j = 0; j < arrLang.length; j++) {
+            if(arrLang[j] === fullSortedWordArray[i][0]){
+                console.log('hola');
+                i++;
+                maxWords++;
+                j=0;
+            }
+            
+        }
         hundredArray = fullSortedWordArray[i];
+
+        listElem.innerHTML += `<li>${k}. ${hundredArray.join(': ')}</li>` ;
         // console.log(hundredArray);
-        listElem.innerHTML += `<li>${i+1}. ${hundredArray.join(': ')}</li>` ;
-        console.log(hundredArray);
         las100.appendChild(listElem);
     }
-    // // 
-    // las100.textContent = hundredArray;
-    // console.log({hundredArray});
+
 }
 
 
@@ -152,6 +171,8 @@ const mostrarAlerta = mensaje =>{
     }, 5000);
 }
 
+
+// === title's shadow
 
 const walk = 7;
 
@@ -171,11 +192,33 @@ function shadow(e){
 
   }
 
+  const langWordsFilter = e => {
+        let languaje = e.target.value;
+        switch (languaje) {
+            case 'es':
+                arrLang = esArrayCommonWords;
+                break;
+
+            case 'en':
+                arrLang = enArrayCommonWords;
+                break;
+
+            case 'el':
+                arrLang = elArrayCommonWords;
+                break;
+
+            default:
+                break;
+        }
+        console.log(arrLang)
+  }
+
 
 
 file.addEventListener('change', getFile);
 searchWordForm.addEventListener('submit', searchWord);
 ahundredForm.addEventListener('submit', repeatedHundred);
 body.addEventListener('mousemove', shadow);
+langSelector.addEventListener('change', langWordsFilter)
  
 
